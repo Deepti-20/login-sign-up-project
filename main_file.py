@@ -1,65 +1,60 @@
-
-import json
+import json,os
 b = []
-user_input=input("enter what you want..login or signup--")
+user_input=input("enter what you want..login or signup => ")
 if user_input=="signup":
-    username=input("enter user name--")
+    username=input("Enter user name for signup => ")
     def mainfun():
-        password1=input("enter your first password--")
-        password2=input("conform your password--")
+        global username
+        password1=input("Enter your password for signup => ")
+        password2=input("Re-enter conform your password for signup => ")
         for num in password1:
             if num.isdigit():
                 break
         if password1==password2:
-            if len(password1)>=8 or len(password1)<=16:
-                print("your password are same")
+            if len(password1)>=6 and len(password1)<=10:
+                print("Your both password are matching ")
                 if num in password1:
                     if "#" in password1 or "@" in password1 or "$" in password1:
-                        print("valid password")                 
-                        my_file=open("neha.json","r")
-                        a = json.load(my_file)
-                        print(a)
-                        my_file.close()
-                        # b = a["user"]
-                        c=a["user"]
-                        i=0
-                        print(len(c[i]))
-                        while i<len(c[i]):
-                            if c[i]["username1"]==username or c[i]["password1"]==password1 :
-                                print(username,password1,"you already signed up")
-                                break
-                            i=i+1
+                        if(os.path.isfile('Signup_page.json')):
+                            op=open("Signup_page.json","r")
+                            aaa=json.load(op)
+                            for i in aaa["User"]:
+                                if i["username"]==username:
+                                    print("This user is Already Exists")
+                                    break
+                            else:
+                                dic,d={},{}
+                                dic["username"]=username
+                                dic["password"]=password1
+                                d["description"]=input("Enter what you like => ")
+                                d["Dob"]=input("Enter your date of birth => ")
+                                d["Gender"]=input("Enter your gender => ")
+                                d["Hobbies"]=input("Enter tour Hobbies => ")
+                                dic["Profile"]=d
+                                v=aaa["User"]
+                                v.append(dic)
+                                f=open("Signup_page.json","w+")
+                                json.dump(aaa,f,indent=4)  
+                                f.close()
+                                print("Signup Succesfully....")
+                                   
                         else:
-                            description=input("enter what you like---")
-                            Dob=input("enter your date of birth---")
-                            Gender=input("enter your gender--")
-                            Hobbies=input("enter tour Hobbies--")
-                            list1=["Description","Dob","Gender","Hobbies"]
-                            new_list=[]
-                            new_list.append(description)
-                            new_list.append(Dob)
-                            new_list.append(Gender)
-                            new_list.append(Hobbies)
-                            profile={}
-                            i=0
-                            while i<len(list1):
-                                profile.update({list1[i]:new_list[i]})
-                                i=i+1
-                            print(profile,"iytrdewserytuioiuytre")
-
-                            b = a["user"]
-                            f = b
-                            dic={}
-                            dic["username1"]=username
-                            dic["password1"]=password1
-                            dic["profile"] = profile
-                            # dic["profile"]=list1
-                            f.append(dic)
-                            d = {"user" :f}
-                            print("okey....")
-                            my_file1=open("neha.json","w")
-                            json.dump(d,my_file1,indent=3)
                             
+                            dic,li,d,di={},[],{},{}
+                            dic["username"]=username
+                            dic["password"]=password1
+                            d["description"]=input("enter what you like => ")
+                            d["Dob"]=input("enter your date of birth => ")
+                            d["Gender"]=input("enter your gender => ")
+                            d["Hobbies"]=input("enter tour Hobbies => ")
+                            dic["Profile"]=d
+                            li.append(dic)
+                            di["User"]=li
+                            ffff=open("Signup_page.json","w+")
+                            json.dump(di,ffff ,indent=4)
+                            ffff.close()
+                            print("Signup Succesfully....")
+
                     else:
                         print("At least password should contain one special character")
                 else:
@@ -68,27 +63,25 @@ if user_input=="signup":
                 print("your password is not valid")
         else:
             print("both password are not same")
-            mainfun()
     mainfun()
 
-
+elif user_input=="login":
+    c=0
+    a=open("Signup_page.json","r")
+    f=json.load(a)
+    d=input("Enter your user name for login => ")
+    v=input("Enter your password for login =>")
+    for i in f["User"]:
+        if i["username"]==d:
+            if d==i['username']:
+                if v==i['password']:
+                    print("Login successful")
+                    print(i)
+                    break
+                else:
+                    print("Check your username")
+            else:
+                print("Check your password")
 else:
-    username=input("enter user name--")
-    password1=input("enter your first password--")
-    my_file=open("neha.json","r")
-    a = json.load(my_file)
-    my_file.close()
-    c=a["user"]
-    i=0
-    while i<len(c[i]):
-        if c[i]["username1"]==username and c[i]["password1"]==password1:
-            print("you already logged in")
-            break
-        i=i+1
-    else:
-        print("invalid password...")
-
-
-
-
-
+    print("Your enter worng input ")
+    print("before entering anything you can check first ")
